@@ -1,0 +1,711 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071a3d">
+<title>SINDJUS-MA | Derruba Veto Já!</title>
+
+<style>
+:root {
+  --navy: #071a3d;
+  --blue: #164783;
+  --yellow: #ffd32a;
+  --paper: #f3f6fb;
+  --muted: #68758c;
+}
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--paper);
+  color: #17233b;
+}
+
+header {
+  background: linear-gradient(115deg, #061633, #164783);
+  color: white;
+  padding: 18px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 900;
+}
+
+.brandmark {
+  width: 42px;
+  height: 42px;
+  border: 2px solid var(--yellow);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: var(--yellow);
+  font-size: 20px;
+}
+
+header small {
+  display: block;
+  font-size: 10px;
+  letter-spacing: .12em;
+  margin-top: 4px;
+  color: #c6d7f2;
+}
+
+.hero {
+  max-width: 1100px;
+  margin: auto;
+  padding: 45px 20px 25px;
+  text-align: center;
+}
+
+.eyebrow {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(36px, 6vw, 62px);
+  line-height: .98;
+  margin: 12px 0;
+  color: var(--navy);
+  font-weight: 950;
+}
+
+h1 span { color: #d49e00; }
+
+.hero p {
+  color: var(--muted);
+  max-width: 650px;
+  margin: 14px auto;
+  line-height: 1.6;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 15px 20px 60px;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 25px;
+  align-items: start;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #e2e8f2;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 12px 36px #0b21400b;
+}
+
+.panel h2 {
+  font-size: 18px;
+  margin: 0 0 8px;
+  color: var(--navy);
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.upload {
+  border: 2px dashed #9aacc6;
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  background: #f8faff;
+}
+
+.upload input { display: none; }
+
+.upload label {
+  cursor: pointer;
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.upload p {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.preview {
+  margin-top: 18px;
+  background: #e9eef6;
+  border-radius: 15px;
+  padding: 12px;
+  display: grid;
+  place-items: center;
+}
+
+#canvas {
+  width: min(100%, 440px);
+  height: auto;
+  aspect-ratio: 1;
+  display: block;
+  border-radius: 8px;
+  touch-action: none;
+}
+
+.control { margin-top: 20px; }
+
+.control label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 9px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--blue);
+}
+
+.frames {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.frame {
+  border: 2px solid #e1e7f0;
+  border-radius: 12px;
+  padding: 7px;
+  background: white;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.frame.active {
+  border-color: var(--blue);
+  background: #f0f6ff;
+}
+
+.frame canvas {
+  width: 100%;
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 7px;
+}
+
+.frame span {
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-weight: 850;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.primary {
+  background: var(--yellow);
+  color: #14213b;
+  flex: 1;
+}
+
+.secondary {
+  background: #eaf0f8;
+  color: var(--blue);
+}
+
+.btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.note {
+  font-size: 11px;
+  color: #77839a;
+  line-height: 1.5;
+  margin-top: 15px;
+}
+
+.steps {
+  display: grid;
+  gap: 17px;
+  margin-top: 22px;
+}
+
+.step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff2bd;
+  color: #654d00;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.step b { font-size: 13px; }
+
+.step p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+.campaign-box {
+  margin-top: 28px;
+  padding: 20px;
+  border-radius: 14px;
+  background: var(--navy);
+  color: white;
+}
+
+.campaign-box small {
+  color: var(--yellow);
+  font-weight: bold;
+  letter-spacing: .15em;
+}
+
+.campaign-box strong {
+  display: block;
+  font-size: 27px;
+  line-height: 1.05;
+  margin-top: 10px;
+}
+
+.campaign-box p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #d5e2f4;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  color: #71809a;
+  font-size: 11px;
+}
+
+@media(max-width:780px) {
+  main { grid-template-columns: 1fr; }
+  .panel { padding: 17px; }
+  header { padding: 15px 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brandmark">S</div>
+    <div>
+      SINDJUS-MA
+      <small>SINDICATO DOS SERVIDORES DA JUSTIÇA</small>
+    </div>
+  </div>
+  <strong style="font-size:11px">CAMPANHA DE MOBILIZAÇÃO</strong>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Sua imagem também é mobilização</div>
+  <h1>DERRUBA <span>VETO</span> JÁ!</h1>
+  <p>
+    Personalize sua foto com a moldura da campanha
+    e compartilhe nas redes sociais. Participe dessa mobilização!
+  </p>
+</section>
+
+<main>
+
+<section class="panel">
+  <h2>1. Escolha sua foto</h2>
+  <p class="hint">
+    Envie uma foto sua. Depois, arraste a imagem no quadro
+    para ajustar o enquadramento.
+  </p>
+
+  <div class="upload">
+    <input id="file" type="file" accept="image/*">
+    <label for="file">＋ Selecionar foto do dispositivo</label>
+    <p>Formatos JPG, PNG ou WEBP</p>
+  </div>
+
+  <div class="preview">
+    <canvas id="canvas" width="1080" height="1080"></canvas>
+  </div>
+
+  <div class="control">
+    <label for="zoom">
+      <span>Zoom da foto</span>
+      <span id="zoomValue">100%</span>
+    </label>
+    <input id="zoom" type="range" min="1" max="3"
+           step=".01" value="1">
+  </div>
+
+  <div class="control">
+    <label>2. Escolha uma moldura</label>
+
+    <div class="frames">
+      <button class="frame active" data-frame="0" type="button">
+        <canvas width="180" height="180"></canvas>
+        <span>Azul e amarelo</span>
+      </button>
+
+      <button class="frame" data-frame="1" type="button">
+        <canvas width="180" height="180"></canvas>
+        <span>Faixa central</span>
+      </button>
+
+      <button class="frame" data-frame="2" type="button">
+        <canvas width="180" height="180"></canvas>
+        <span>Mobilização</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn primary" id="download" disabled>
+      Baixar minha foto (PNG)
+    </button>
+    <button class="btn secondary" id="share" disabled>
+      Compartilhar
+    </button>
+  </div>
+
+  <p class="note">
+    Sua foto é processada diretamente neste navegador.
+    Nenhuma imagem é enviada ou armazenada pelo site.
+  </p>
+</section>
+
+<aside class="panel">
+  <h2>Como participar?</h2>
+  <p class="hint">
+    É simples: personalize, baixe e publique sua foto.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <div>
+        <b>Escolha uma foto</b>
+        <p>Use uma imagem nítida, de preferência com o rosto bem visível.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div>
+        <b>Ajuste o enquadramento</b>
+        <p>Arraste a foto e controle o zoom até ficar como deseja.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div>
+        <b>Baixe e compartilhe</b>
+        <p>Publique sua imagem e ajude a ampliar a mobilização.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="campaign-box">
+    <small>MOBILIZAÇÃO SINDICAL</small>
+    <strong>DERRUBA<br>VETO JÁ!</strong>
+    <p>
+      Unidos pela valorização e pelos direitos
+      dos servidores da Justiça.
+    </p>
+  </div>
+</aside>
+
+</main>
+
+<footer>SINDJUS-MA · Seu Direito, Nossa Luta!</footer>
+
+<script>
+(() => {
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const file = document.getElementById("file");
+  const zoom = document.getElementById("zoom");
+  const zoomValue = document.getElementById("zoomValue");
+
+  let img = null;
+  let scale = 1;
+  let base = 1;
+  let ox = 0;
+  let oy = 0;
+  let frame = 0;
+  let drag = null;
+
+  function write(c, text, x, y, size, color) {
+    c.fillStyle = color;
+    c.font = "900 " + size + "px Arial";
+    c.textAlign = "center";
+    c.textBaseline = "middle";
+    c.shadowColor = "#0005";
+    c.shadowBlur = 4;
+    c.fillText(text, x, y);
+    c.shadowBlur = 0;
+  }
+
+  function drawFrame(c, w, h, n) {
+    c.save();
+    c.scale(w / 1080, h / 1080);
+
+    if (n === 0) {
+      c.fillStyle = "#071a3d";
+      c.fillRect(0, 0, 1080, 1080);
+      c.fillStyle = "#ffd32a";
+      c.fillRect(0, 0, 1080, 24);
+      c.fillRect(0, 1056, 1080, 24);
+      c.fillStyle = "#071a3d";
+      c.fillRect(0, 820, 1080, 236);
+      c.fillStyle = "#ffd32a";
+      c.beginPath();
+      c.moveTo(0, 820);
+      c.lineTo(1080, 760);
+      c.lineTo(1080, 790);
+      c.lineTo(0, 850);
+      c.fill();
+      write(c, "DERRUBA VETO JÁ!", 540, 925, 86, "#fff");
+      write(c, "SINDJUS-MA", 540, 1000, 34, "#ffd32a");
+    }
+
+    if (n === 1) {
+      c.fillStyle = "#071a3d";
+      c.fillRect(0, 0, 1080, 190);
+      c.fillRect(0, 890, 1080, 190);
+      c.fillStyle = "#ffd32a";
+      c.fillRect(0, 190, 1080, 18);
+      c.fillRect(0, 872, 1080, 18);
+      write(c, "SINDJUS-MA", 540, 110, 48, "#ffd32a");
+      write(c, "DERRUBA VETO JÁ!", 540, 985, 78, "#fff");
+    }
+
+    if (n === 2) {
+      c.strokeStyle = "#ffd32a";
+      c.lineWidth = 34;
+      c.strokeRect(18, 18, 1044, 1044);
+      c.fillStyle = "#071a3d";
+      c.beginPath();
+      c.moveTo(0, 760);
+      c.lineTo(1080, 700);
+      c.lineTo(1080, 1080);
+      c.lineTo(0, 1080);
+      c.closePath();
+      c.fill();
+      write(c, "É HORA DE", 540, 850, 42, "#ffd32a");
+      write(c, "DERRUBAR O VETO!", 540, 945, 67, "#fff");
+      write(c, "SINDJUS-MA", 540, 1015, 32, "#ffd32a");
+    }
+
+    c.restore();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, 1080, 1080);
+    ctx.fillStyle = "#dce4ef";
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    if (img) {
+      const s = base * scale;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, 1080, 1080);
+      ctx.clip();
+      ctx.drawImage(img, ox, oy, img.width * s, img.height * s);
+      ctx.restore();
+    } else {
+      ctx.fillStyle = "#071a3d";
+      ctx.fillRect(0, 0, 1080, 1080);
+      write(ctx, "SUA FOTO AQUI", 540, 510, 64, "#fff");
+      write(ctx, "Selecione uma imagem para começar",
+            540, 575, 26, "#ffd32a");
+    }
+
+    drawFrame(ctx, 1080, 1080, frame);
+    document.getElementById("download").disabled = !img;
+    document.getElementById("share").disabled = !img;
+  }
+
+  function fitImage() {
+    base = Math.max(1080 / img.width, 1080 / img.height);
+    scale = 1;
+    ox = (1080 - img.width * base) / 2;
+    oy = (1080 - img.height * base) / 2;
+    zoom.value = "1";
+    zoomValue.textContent = "100%";
+    draw();
+  }
+
+  function thumbs() {
+    document.querySelectorAll(".frame").forEach((button, i) => {
+      const c = button.querySelector("canvas");
+      const x = c.getContext("2d");
+      x.fillStyle = "#e6edf6";
+      x.fillRect(0, 0, 180, 180);
+      x.fillStyle = "#9eacc0";
+      x.fillRect(35, 18, 110, 145);
+      drawFrame(x, 180, 180, i);
+      button.classList.toggle("active", i === frame);
+    });
+  }
+
+  file.addEventListener("change", e => {
+    const f = e.target.files[0];
+    if (!f) return;
+
+    if (!f.type.startsWith("image/")) {
+      alert("Selecione um arquivo de imagem.");
+      return;
+    }
+
+    const url = URL.createObjectURL(f);
+    const im = new Image();
+
+    im.onload = () => {
+      img = im;
+      fitImage();
+      URL.revokeObjectURL(url);
+    };
+
+    im.onerror = () => {
+      URL.revokeObjectURL(url);
+      alert("Não foi possível abrir essa imagem.");
+    };
+
+    im.src = url;
+  });
+
+  zoom.addEventListener("input", () => {
+    const next = Number(zoom.value);
+    const old = scale;
+
+    scale = next;
+    ox = 540 - (540 - ox) * (scale / old);
+    oy = 540 - (540 - oy) * (scale / old);
+
+    zoomValue.textContent = Math.round(scale * 100) + "%";
+    draw();
+  });
+
+  document.querySelectorAll(".frame").forEach(button => {
+    button.addEventListener("click", () => {
+      frame = Number(button.dataset.frame);
+      thumbs();
+      draw();
+    });
+  });
+
+  canvas.addEventListener("pointerdown", e => {
+    if (!img) return;
+    canvas.setPointerCapture(e.pointerId);
+    drag = { x: e.clientX, y: e.clientY, ox, oy };
+  });
+
+  canvas.addEventListener("pointermove", e => {
+    if (!drag) return;
+
+    const r = canvas.getBoundingClientRect();
+    ox = drag.ox + (e.clientX - drag.x) * 1080 / r.width;
+    oy = drag.oy + (e.clientY - drag.y) * 1080 / r.height;
+    draw();
+  });
+
+  const stopDrag = () => drag = null;
+  canvas.addEventListener("pointerup", stopDrag);
+  canvas.addEventListener("pointercancel", stopDrag);
+
+  function makeBlob() {
+    return new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+  }
+
+  document.getElementById("download").addEventListener("click", async () => {
+    const blob = await makeBlob();
+    if (!blob) {
+      alert("Não foi possível gerar a imagem.");
+      return;
+    }
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "sindjusma-derruba-veto-ja.png";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  document.getElementById("share").addEventListener("click", async () => {
+    const blob = await makeBlob();
+    if (!blob) return;
+
+    const f = new File([blob], "sindjusma-derruba-veto-ja.png",
+                       { type: "image/png" });
+
+    try {
+      if (navigator.canShare && navigator.canShare({ files: [f] })) {
+        await navigator.share({
+          files: [f],
+          title: "Derruba Veto Já!",
+          text: "Participe da mobilização do SINDJUS-MA!"
+        });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = f.name;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        alert("Imagem baixada! Agora você pode publicá-la nas redes sociais.");
+      }
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        alert("Não foi possível compartilhar. Baixe a imagem pelo botão ao lado.");
+      }
+    }
+  });
+
+  thumbs();
+  draw();
+})();
+</script>
+
+</body>
+</html>
