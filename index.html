@@ -393,24 +393,8 @@ footer {
   </div>
 
   <div class="control">
-    <label>2. Escolha uma moldura</label>
-
-    <div class="frames">
-      <button class="frame active" data-frame="0" type="button">
-        <canvas width="180" height="180"></canvas>
-        <span>Vermelho e amarelo</span>
-      </button>
-
-      <button class="frame" data-frame="1" type="button">
-        <canvas width="180" height="180"></canvas>
-        <span>Faixa central</span>
-      </button>
-
-      <button class="frame" data-frame="2" type="button">
-        <canvas width="180" height="180"></canvas>
-        <span>Mobilização</span>
-      </button>
-    </div>
+    <label>2. Moldura oficial da campanha</label>
+    <p class="hint">A arte oficial “Derruba Veto, Já!” será aplicada automaticamente à sua foto.</p>
   </div>
 
   <div class="actions">
@@ -517,73 +501,10 @@ footer {
   let base = 1;
   let ox = 0;
   let oy = 0;
-  let frame = 0;
   let drag = null;
-
-  function write(c, text, x, y, size, color) {
-    c.fillStyle = color;
-    c.font = "900 " + size + "px Arial";
-    c.textAlign = "center";
-    c.textBaseline = "middle";
-    c.shadowColor = "#0005";
-    c.shadowBlur = 4;
-    c.fillText(text, x, y);
-    c.shadowBlur = 0;
-  }
-
-  function drawFrame(c, w, h, n) {
-    c.save();
-    c.scale(w / 1080, h / 1080);
-
-    if (n === 0) {
-      c.fillStyle = "#930000";
-      c.fillRect(0, 0, 1080, 1080);
-      c.fillStyle = "#FFD32A";
-      c.fillRect(0, 0, 1080, 24);
-      c.fillRect(0, 1056, 1080, 24);
-      c.fillStyle = "#930000";
-      c.fillRect(0, 820, 1080, 236);
-      c.fillStyle = "#FFD32A";
-      c.beginPath();
-      c.moveTo(0, 820);
-      c.lineTo(1080, 760);
-      c.lineTo(1080, 790);
-      c.lineTo(0, 850);
-      c.fill();
-      write(c, "DERRUBA VETO, JÁ!", 540, 925, 86, "#fff");
-      write(c, "SINDJUS-MA", 540, 1000, 34, "#FFD32A");
-    }
-
-    if (n === 1) {
-      c.fillStyle = "#930000";
-      c.fillRect(0, 0, 1080, 190);
-      c.fillRect(0, 890, 1080, 190);
-      c.fillStyle = "#FFD32A";
-      c.fillRect(0, 190, 1080, 18);
-      c.fillRect(0, 872, 1080, 18);
-      write(c, "SINDJUS-MA", 540, 110, 48, "#FFD32A");
-      write(c, "DERRUBA VETO, JÁ!", 540, 985, 78, "#fff");
-    }
-
-    if (n === 2) {
-      c.strokeStyle = "#FFD32A";
-      c.lineWidth = 34;
-      c.strokeRect(18, 18, 1044, 1044);
-      c.fillStyle = "#930000";
-      c.beginPath();
-      c.moveTo(0, 760);
-      c.lineTo(1080, 700);
-      c.lineTo(1080, 1080);
-      c.lineTo(0, 1080);
-      c.closePath();
-      c.fill();
-      write(c, "É HORA DE", 540, 850, 42, "#FFD32A");
-      write(c, "DERRUBAR O VETO!", 540, 945, 67, "#fff");
-      write(c, "SINDJUS-MA", 540, 1015, 32, "#FFD32A");
-    }
-
-    c.restore();
-  }
+  const frameOverlay = new Image();
+  frameOverlay.src = "AVATAR-CAMPANHA-DERRUBA-VETO-J%C3%81.png";
+  frameOverlay.onload = draw;
 
   function draw() {
     ctx.clearRect(0, 0, 1080, 1080);
@@ -599,14 +520,17 @@ footer {
       ctx.drawImage(img, ox, oy, img.width * s, img.height * s);
       ctx.restore();
     } else {
-      ctx.fillStyle = "#930000";
+      ctx.fillStyle = "#F7D51C";
       ctx.fillRect(0, 0, 1080, 1080);
-      write(ctx, "SUA FOTO AQUI", 540, 510, 64, "#fff");
-      write(ctx, "Selecione uma imagem para começar",
-            540, 575, 26, "#FFD32A");
+      ctx.fillStyle = "#930000";
+      ctx.font = "900 48px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("SUA FOTO AQUI", 540, 540);
     }
 
-    drawFrame(ctx, 1080, 1080, frame);
+    if (frameOverlay.complete && frameOverlay.naturalWidth) {
+      ctx.drawImage(frameOverlay, 0, 0, 1080, 1080);
+    }
     document.getElementById("download").disabled = !img;
     document.getElementById("share").disabled = !img;
   }
@@ -619,19 +543,6 @@ footer {
     zoom.value = "1";
     zoomValue.textContent = "100%";
     draw();
-  }
-
-  function thumbs() {
-    document.querySelectorAll(".frame").forEach((button, i) => {
-      const c = button.querySelector("canvas");
-      const x = c.getContext("2d");
-      x.fillStyle = "#FFF4D8";
-      x.fillRect(0, 0, 180, 180);
-      x.fillStyle = "#D9B7B7";
-      x.fillRect(35, 18, 110, 145);
-      drawFrame(x, 180, 180, i);
-      button.classList.toggle("active", i === frame);
-    });
   }
 
   file.addEventListener("change", e => {
@@ -670,14 +581,6 @@ footer {
 
     zoomValue.textContent = Math.round(scale * 100) + "%";
     draw();
-  });
-
-  document.querySelectorAll(".frame").forEach(button => {
-    button.addEventListener("click", () => {
-      frame = Number(button.dataset.frame);
-      thumbs();
-      draw();
-    });
   });
 
   canvas.addEventListener("pointerdown", e => {
@@ -748,7 +651,6 @@ footer {
     }
   });
 
-  thumbs();
   draw();
 })();
 </script>
